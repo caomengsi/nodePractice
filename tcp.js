@@ -9,6 +9,13 @@ var users={};
 var net=require('net');
 net.createServer(function(conn){
   var currentname;
+  function broadcast(msg,exceptMy){
+    for(var i in users){
+      if(!exceptMy||i!=currentname){
+        users[i].write(msg);
+      }
+    }
+  }
   conn.setEncoding('utf8');
   conn.write('/033[92mwelcom new connect/033[39m'+'\n'+
   count+'this is other people connect\n'+'please write your name');
@@ -27,12 +34,13 @@ net.createServer(function(conn){
       }
     }else{
       // 视为为聊天消息
-      for(var i in users){
-        //发给除自己以外的所有用户
-        if(i!=currentname){
-          users[i].write(currentname+'  say  '+data+'!\n');
-        }
-      }
+      broadcast(currentname+'  say  '+data+'!\n');
+      // for(var i in users){
+      //   //发给除自己以外的所有用户
+      //   if(i!=currentname){
+      //     users[i].write(currentname+'  say  '+data+'!\n');
+      //   }
+      // }
     }
     // console.log(data);
   })
