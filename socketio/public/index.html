@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+ <html>
+     <head>
+        <meta charset="utf-8">
+
+        <title>first html5 page</title>
+
+
+
+
+     </head>
+
+     <body>
+       <h1>websocket echo</h1>
+       <h2><span id="le"></span></h2>
+
+       <script src="/socket.io/socket.io.js"></script>
+<script>
+var socket = io.connect('http://localhost:3000');
+socket.on('news', function (data) {
+console.log(data);
+socket.emit('my other event', { my: 'data' });
+});
+
+</script>
+
+     </body>
+ </html>
