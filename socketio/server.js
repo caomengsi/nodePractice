@@ -9,9 +9,20 @@ server.listen(3000);
 
 app.use(express.static('public'));
 
+var countId=0;
+
 io.sockets.on('connection', function (socket) {
-  socket.emit('news', { hello: 'world' });
-  socket.on('my other event', function (data) {
-    console.log(data);
-  });
+  countId++
+  socket.emit('conn', { msg: `<li>connection success, welcome you!!!</li>`, countId:countId});
+  console.log('socketid', socket.id)
+  socket.broadcast.emit('conn', { msg: `<li style="color:blue;">ID:${socket.id} are comming</li>`, countId:countId });
+  socket.on('s-msg',function(data){
+      socket.emit('r-msg', { msg: `<li>${data}</li>`});
+      socket.broadcast.emit('r-msg', { msg: `<li style="color:blue;">${socket.id} said <br\> ${data}</li>`});
+  })
+  socket.on('disconnect', (reason) => {
+    countId--;
+   socket.broadcast.emit('leave', { msg: `ID:${socket.id} are leaving`, countId:countId });
+ });
+
 });
