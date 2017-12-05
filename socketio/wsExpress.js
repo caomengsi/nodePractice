@@ -1,3 +1,5 @@
+// 参考 https://github.com/HenningM/express-ws
+
 var express = require('express');
 var app = express();
 var expressWs = require('express-ws')(app);
